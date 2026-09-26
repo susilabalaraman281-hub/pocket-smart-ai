@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Interior Budget Planner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home-planner.css') }}">
+</head>
+
+<body>
+
+<header class="header">
+    <h1>Home Interior Budget Planner</h1>
+    <p>Create a customized budget plan for your dream home interior</p>
+</header>
+
+<main class="container">
+
+    <form>
+
+        <section class="card">
+            <h2>💰 Budget Details</h2>
+
+            <div class="field">
+                <label>Total Budget ($)</label>
+                <input type="number" placeholder="5000">
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>🛋️ Fixtures & Furniture</h2>
+
+            <div class="grid">
+
+                <div class="field">
+                    <label>Number of Lights/Fixtures</label>
+                    <input type="number" placeholder="5">
+                </div>
+
+                <div class="field">
+                    <label>Number of Ceiling Fans</label>
+                    <input type="number" placeholder="4">
+                </div>
+
+                <div class="field">
+                    <label>Number of Furniture Pieces</label>
+                    <input type="number" placeholder="2">
+                </div>
+
+                <div class="field">
+                    <label>Number of Dining Tables</label>
+                    <input type="number" placeholder="1">
+                </div>
+
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>🏠 Rooms to Include</h2>
+
+            <div class="rooms">
+                <label>
+                    <input type="checkbox" name="rooms" value="living-room">
+                    Living Room
+                </label>
+
+                <label>
+                    <input type="checkbox" name="rooms" value="kitchen">
+                    Kitchen
+                </label>
+
+                <label>
+                    <input type="checkbox" name="rooms" value="bedroom">
+                    Bedroom
+                </label>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>📝 Additional Information</h2>
+
+            <div class="field">
+                <label>Special Requirements or Preferences</label>
+
+                <textarea
+                    placeholder="Any specific requirements or preferences..."
+                ></textarea>
+            </div>
+        </section>
+
+        <button type="submit">
+            ✨ Generate Recommendations
+        </button>
+
+    </form>
+
+</main>
+
+</body>
+</html>

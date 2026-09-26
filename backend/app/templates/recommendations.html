@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Personalized Budget Plan</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f2fb;
+            color: #202638;
+        }
+
+        .header {
+            background: #285d91;
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0 0 10px;
+            font-size: 32px;
+        }
+
+        .header p {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 25px auto;
+            padding: 0 16px;
+        }
+
+        .summary {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+        }
+
+        .summary-title {
+            background: #285d91;
+            color: white;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .summary-box {
+            background: #f5f8fc;
+            padding: 18px;
+            border-radius: 12px;
+        }
+
+        .summary-box span {
+            display: block;
+            color: #555;
+            margin-bottom: 7px;
+        }
+
+        .summary-box strong {
+            font-size: 25px;
+            color: #285d91;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+        }
+
+        .card h2 {
+            color: #285d91;
+            margin-top: 0;
+            font-size: 25px;
+        }
+
+        .allocation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 17px 5px;
+            border-bottom: 1px solid #e4e4e4;
+            font-size: 17px;
+        }
+
+        .allocation:last-child {
+            border-bottom: none;
+        }
+
+        .allocation strong {
+            color: #202638;
+        }
+
+        .section-title {
+            color: #285d91;
+            font-size: 23px;
+            margin: 5px 0 18px;
+        }
+
+        .item {
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+
+        .item-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .item-description {
+            color: #666;
+            margin-top: 7px;
+            line-height: 1.5;
+        }
+
+        .item-details {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .badge {
+            background: #edf4fb;
+            color: #285d91;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .links {
+            margin-top: 13px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .links a {
+            text-decoration: none;
+            background: #285d91;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+
+        .requirements .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 5px;
+            border-bottom: 1px solid #e4e4e4;
+        }
+
+        .requirements .row:last-child {
+            border-bottom: none;
+        }
+
+        .rooms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .room {
+            background: #e9f2fc;
+            color: #285d91;
+            padding: 10px 18px;
+            border-radius: 25px;
+        }
+
+        .preference {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #444;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            background: #285d91;
+            color: white;
+            text-decoration: none;
+            padding: 17px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 30px 0;
+        }
+
+        @media (max-width: 650px) {
+            .header h1 {
+                font-size: 27px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .item-top {
+                flex-direction: column;
+            }
+
+            .allocation {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>✨ Your Personalized Budget Plan</h1>
+    <p>Smart recommendations based on your budget and requirements</p>
+</div>
+
+<div class="container">
+
+    <!-- BUDGET SUMMARY -->
+    <div class="summary">
+        <div class="summary-title">
+            💰 Budget Summary
+        </div>
+
+        <div class="summary-grid">
+
+            <div class="summary-box">
+                <span>Total Budget</span>
+                <strong>
+                    ${{ "%.2f"|format(recommendation.total_budget) }}
+                </strong>
+            </div>
+
+            <div class="summary-box">
+                <span>Remaining Budget</span>
+                <strong>
+                    ${{ "%.2f"|format(
+                        recommendation.total_budget
+                        - recommendation.furniture_budget
+                        - recommendation.lighting_budget
+                        - recommendation.kitchen_budget
+                        - recommendation.decor_budget
+                        - recommendation.reserve_budget
+                    ) }}
+                </strong>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- BUDGET ALLOCATION -->
+    <div class="card">
+        <h2>📊 Recommended Budget Allocation</h2>
+
+        <div class="allocation">
+            <span>🛋️ Furniture</span>
+            <strong>${{ "%.2f"|format(recommendation.furniture_budget) }}</strong>
+        </div>
+
+        <div class="allocation">
+            <span>💡 Lighting & Fixtures</span>
+            <strong>${{ "%.2f"|format(recommendation.lighting_budget) }}</strong>
+        </div>
+
+        <div class="allocation">
+            <span>🍳 Kitchen</span>
+            <strong>${{ "%.2f"|format(recommendation.kitchen_budget) }}</strong>
+        </div>
+
+        <div class="allocation">
+            <span>🎨 Decor</span>
+            <strong>${{ "%.2f"|format(recommendation.decor_budget) }}</strong>
+        </div>
+
+        <div class="allocation">
+            <span>🛡️ Emergency Reserve</span>
+            <strong>${{ "%.2f"|format(recommendation.reserve_budget) }}</strong>
+        </div>
+    </div>
+
+
+    <!-- LIGHTING -->
+    <div class="card">
+        <h2 class="section-title">💡 Lighting</h2>
+
+        <div class="item">
+            <div class="item-top">
+                <div>
+                    <div class="item-name">LED Bulbs / Ceiling Lights</div>
+                    <div class="item-description">
+                        Energy-efficient lighting suitable for general home illumination.
+                    </div>
+                </div>
+
+                <strong>
+                    ${{ "%.2f"|format(recommendation.lighting_budget) }}
+                </strong>
+            </div>
+
+            <div class="item-details">
+                <span class="badge">
+                    Quantity: {{ recommendation.lights }}
+                </span>
+                <span class="badge">
+                    Budget: ${{ "%.2f"|format(recommendation.lighting_budget) }}
+                </span>
+            </div>
+
+            <div class="links">
+                <a href="https://www.amazon.com/s?k=LED+ceiling+light"
+                   target="_blank">Amazon</a>
+
+                <a href="https://www.flipkart.com/search?q=LED%20ceiling%20light"
+                   target="_blank">Flipkart</a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- CEILING FANS -->
+    <div class="card">
+        <h2 class="section-title">🌀 Ceiling Fans</h2>
+
+        <div class="item">
+            <div class="item-top">
+                <div>
+                    <div class="item-name">Energy Efficient Ceiling Fan</div>
+                    <div class="item-description">
+                        Basic functional ceiling fan for living and kitchen spaces.
+                    </div>
+                </div>
+
+                <strong>
+                    ${{ "%.2f"|format(recommendation.fans * 125) }}
+                </strong>
+            </div>
+
+            <div class="item-details">
+                <span class="badge">
+                    Quantity: {{ recommendation.fans }}
+                </span>
+            </div>
+
+            <div class="links">
+                <a href="https://www.amazon.com/s?k=ceiling+fan"
+                   target="_blank">Amazon</a>
+
+                <a href="https://www.flipkart.com/search?q=ceiling%20fan"
+                   target="_blank">Flipkart</a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- FURNITURE -->
+    <div class="card">
+        <h2 class="section-title">🛋️ Furniture</h2>
+
+        <div class="item">
+            <div class="item-top">
+                <div>
+                    <div class="item-name">Essential Furniture Set</div>
+                    <div class="item-description">
+                        Practical furniture selected according to the available budget.
+                    </div>
+                </div>
+
+                <strong>
+                    ${{ "%.2f"|format(recommendation.furniture_budget) }}
+                </strong>
+            </div>
+
+            <div class="item-details">
+                <span class="badge">
+                    Quantity: {{ recommendation.furniture }}
+                </span>
+            </div>
+
+            <div class="links">
+                <a href="https://www.amazon.com/s?k=home+furniture"
+                   target="_blank">Amazon</a>
+
+                <a href="https://www.ikea.com/"
+                   target="_blank">IKEA</a>
+
+                <a href="https://www.flipkart.com/search?q=home%20furniture"
+                   target="_blank">Flipkart</a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- DINING -->
+    <div class="card">
+        <h2 class="section-title">🍽️ Dining Table</h2>
+
+        <div class="item">
+            <div class="item-top">
+                <div>
+                    <div class="item-name">Functional Dining Table</div>
+                    <div class="item-description">
+                        A practical dining solution suitable for the selected home plan.
+                    </div>
+                </div>
+
+                <strong>Budget Included</strong>
+            </div>
+
+            <div class="item-details">
+                <span class="badge">
+                    Quantity: {{ recommendation.dining_tables }}
+                </span>
+            </div>
+
+            <div class="links">
+                <a href="https://www.amazon.com/s?k=dining+table"
+                   target="_blank">Amazon</a>
+
+                <a href="https://www.flipkart.com/search?q=dining%20table"
+                   target="_blank">Flipkart</a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- KITCHEN -->
+    <div class="card">
+        <h2 class="section-title">🍳 Kitchen</h2>
+
+        <div class="item">
+            <div class="item-top">
+                <div>
+                    <div class="item-name">Essential Kitchen Setup</div>
+                    <div class="item-description">
+                        Functional kitchen essentials planned within the available budget.
+                    </div>
+                </div>
+
+                <strong>
+                    ${{ "%.2f"|format(recommendation.kitchen_budget) }}
+                </strong>
+            </div>
+
+            <div class="links">
+                <a href="https://www.amazon.com/s?k=kitchen+essentials"
+                   target="_blank">Amazon</a>
+
+                <a href="https://www.flipkart.com/search?q=kitchen%20essentials"
+                   target="_blank">Flipkart</a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- DECOR -->
+    <div class="card">
+        <h2 class="section-title">🎨 Decor</h2>
+
+        <div class="item">
+            <div class="item-top">
+                <div>
+                    <div class="item-name">Simple Home Decor</div>
+                    <div class="item-description">
+                        Clean and elegant decorative elements while keeping the budget controlled.
+                    </div>
+                </div>
+
+                <strong>
+                    ${{ "%.2f"|format(recommendation.decor_budget) }}
+                </strong>
+            </div>
+
+            <div class="links">
+                <a href="https://www.amazon.com/s?k=home+decor"
+                   target="_blank">Amazon</a>
+
+                <a href="https://www.ikea.com/"
+                   target="_blank">IKEA</a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SELECTED ROOMS -->
+    <div class="card">
+        <h2>🏠 Selected Rooms</h2>
+
+        <div class="rooms">
+            {% for room in recommendation.rooms %}
+                <span class="room">{{ room }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <!-- REQUIREMENTS -->
+    <div class="card requirements">
+        <h2>🪑 Your Requirements</h2>
+
+        <div class="row">
+            <span>Lights / Fixtures</span>
+            <strong>{{ recommendation.lights }}</strong>
+        </div>
+
+        <div class="row">
+            <span>Ceiling Fans</span>
+            <strong>{{ recommendation.fans }}</strong>
+        </div>
+
+        <div class="row">
+            <span>Furniture Pieces</span>
+            <strong>{{ recommendation.furniture }}</strong>
+        </div>
+
+        <div class="row">
+            <span>Dining Tables</span>
+            <strong>{{ recommendation.dining_tables }}</strong>
+        </div>
+    </div>
+
+
+    <!-- PREFERENCES -->
+    <div class="card">
+        <h2>📝 Special Preferences</h2>
+
+        <div class="preference">
+            {{ recommendation.preferences }}
+        </div>
+    </div>
+
+
+    <a href="/home-planner" class="back">
+        ← Create Another Plan
+    </a>
+
+</div>
+
+</body>
+</html>
+EOFpython3 -m py_compile backend/app/main.py
+CTRL+C
+cd ~/PocketSmartAI
+git --version
+apt update
+apt install git -y
+git --version
+git init
+git branch -M main
+git remote remove origin 2>/dev/null
+git remote add origin https://github.com/susilabalaraman281-hub/pocket-smart-ai.git
+cat > .gitignore <<'EOF'
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+*.db
+*.sqlite3
